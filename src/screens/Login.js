@@ -89,7 +89,7 @@ const Login = ({ navigation }) => {
 						scrollEventThrottle={1}
 						decelerationRate='fast'
 						{...{ onScroll }}>
-						<LoginSection layoutWidth={layoutWidth} />
+						<LoginSection layoutWidth={layoutWidth} onPress={() => navigation.navigate('Home')} />
 						<SignUpSection layoutWidth={layoutWidth} />
 					</Animated.ScrollView>
 				</View>
@@ -100,7 +100,7 @@ const Login = ({ navigation }) => {
 
 export default Login
 
-const LoginSection = ({ layoutWidth }) => {
+const LoginSection = ({ layoutWidth, onPress }) => {
 	const [ secureText, setSecureText ] = React.useState(true)
 	return (
 		<View style={styles.contentContainer(layoutWidth)}>
@@ -127,7 +127,7 @@ const LoginSection = ({ layoutWidth }) => {
 			<View style={styles.forgotContainer}>
 				<Text style={[ styles.text, styles.forgotText ]}>Forgot Password?</Text>
 			</View>
-			<Pressable style={[ styles.button, { marginTop: 90 } ]} onPress={() => {}}>
+			<Pressable style={[ styles.button, { marginTop: 90 } ]} onPress={onPress}>
 				<Text style={[ styles.text, styles.buttonText ]}>Log In</Text>
 			</Pressable>
 			<Text style={[ styles.text, { marginVertical: 36, color: 'rgba(255,255,255,0.9)' } ]}>OR</Text>
