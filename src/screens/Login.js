@@ -1,12 +1,12 @@
 import React from 'react'
-import { Text, ImageBackground, StyleSheet, StatusBar, Pressable, View, TextInput } from 'react-native'
+import { Text, ImageBackground, StyleSheet, StatusBar, Pressable, View, TextInput, Image } from 'react-native'
 import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Animated, { Extrapolate, interpolate } from 'react-native-reanimated'
 import { mixColor, onScrollEvent, useValue } from 'react-native-redash/lib/module/v1'
+import { Facebook, Twitter, Google } from '../assets/icons/Icons'
 
 const Login = ({ navigation }) => {
-	const [ secureText, setSecureText ] = React.useState(true)
 	const [ layoutWidth, setLayoutWidth ] = React.useState(265)
 	const [ measure, setMeasure ] = React.useState(0)
 	const selected = useValue(0)
@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
 	}
 
 	const translateX = interpolate(selected, {
-		inputRange: [ 0, 1 ],
+		inputRange: [ 0, measure ],
 		outputRange: [ 0, measure ],
 		extrapolate: Extrapolate.CLAMP
 	})
@@ -87,120 +87,10 @@ const Login = ({ navigation }) => {
 						showsHorizontalScrollIndicator={false}
 						pagingEnabled
 						scrollEventThrottle={1}
-						// onScroll={(r) => {
-						// 	selected.setValue(r.nativeEvent.contentOffset.x)
-						// }}
 						decelerationRate='fast'
 						{...{ onScroll }}>
-						<View style={{ marginTop: 50, width: layoutWidth }}>
-							<View
-								style={{
-									backgroundColor: 'white',
-									borderRadius: 100,
-									paddingHorizontal: 16,
-									justifyContent: 'center',
-									elevation: 2
-								}}>
-								<TextInput
-									placeholder='Enter email or username'
-									keyboardType='email-address'
-									style={{ height: 40 }}
-								/>
-							</View>
-							<View
-								style={{
-									backgroundColor: 'white',
-									borderRadius: 100,
-									paddingHorizontal: 16,
-									alignItems: 'center',
-									marginTop: 16,
-									elevation: 2,
-									flexDirection: 'row'
-								}}>
-								<TextInput
-									placeholder='Password'
-									secureTextEntry={secureText}
-									style={{ height: 40, flex: 0.9 }}
-								/>
-								<Pressable
-									onPress={() => setSecureText(!secureText)}
-									hitSlop={{ top: 16, bottom: 16, left: 16 }}
-									style={{ flex: 0.1 }}>
-									<Icon name={secureText ? 'eye-off' : 'eye'} color='#A8A7A7' size={20} />
-								</Pressable>
-							</View>
-							<View style={styles.forgotContainer}>
-								<Text style={[ styles.text, styles.forgotText ]}>Forgot Password?</Text>
-							</View>
-							<Pressable style={[ styles.button, { marginTop: 90 } ]} onPress={() => {}}>
-								<Text style={[ styles.text, styles.buttonText ]}>Log In</Text>
-							</Pressable>
-							<Text style={styles.text} />
-						</View>
-						<View style={{ marginTop: 50, width: layoutWidth }}>
-							<View
-								style={{
-									backgroundColor: 'white',
-									borderRadius: 100,
-									paddingHorizontal: 16,
-									justifyContent: 'center',
-									elevation: 2
-								}}>
-								<TextInput
-									placeholder='Enter email or username'
-									keyboardType='email-address'
-									style={{ height: 40 }}
-								/>
-							</View>
-							<View
-								style={{
-									backgroundColor: 'white',
-									borderRadius: 100,
-									paddingHorizontal: 16,
-									alignItems: 'center',
-									marginTop: 16,
-									elevation: 2,
-									flexDirection: 'row'
-								}}>
-								<TextInput
-									placeholder='Password'
-									secureTextEntry={secureText}
-									style={{ height: 40, flex: 0.9 }}
-								/>
-								<Pressable
-									onPress={() => setSecureText(!secureText)}
-									hitSlop={{ top: 16, bottom: 16, left: 16 }}
-									style={{ flex: 0.1 }}>
-									<Icon name={secureText ? 'eye-off' : 'eye'} color='#A8A7A7' size={20} />
-								</Pressable>
-							</View>
-							<View
-								style={{
-									backgroundColor: 'white',
-									borderRadius: 100,
-									paddingHorizontal: 16,
-									alignItems: 'center',
-									marginTop: 16,
-									elevation: 2,
-									flexDirection: 'row'
-								}}>
-								<TextInput
-									placeholder='Confirm Password'
-									secureTextEntry={secureText}
-									style={{ height: 40, flex: 0.9 }}
-								/>
-								<Pressable
-									onPress={() => setSecureText(!secureText)}
-									hitSlop={{ top: 16, bottom: 16, left: 16 }}
-									style={{ flex: 0.1 }}>
-									<Icon name={secureText ? 'eye-off' : 'eye'} color='#A8A7A7' size={20} />
-								</Pressable>
-							</View>
-							<Pressable style={styles.button}>
-								<Text style={[ styles.text, styles.buttonText ]}>Sign Up</Text>
-							</Pressable>
-							<Text style={styles.text} />
-						</View>
+						<LoginSection layoutWidth={layoutWidth} />
+						<SignUpSection layoutWidth={layoutWidth} />
 					</Animated.ScrollView>
 				</View>
 			</ImageBackground>
@@ -209,6 +99,131 @@ const Login = ({ navigation }) => {
 }
 
 export default Login
+
+const LoginSection = ({ layoutWidth }) => {
+	const [ secureText, setSecureText ] = React.useState(true)
+	return (
+		<View style={styles.contentContainer(layoutWidth)}>
+			<View style={styles.textInputContainer}>
+				<TextInput placeholder='Enter email or username' keyboardType='email-address' style={{ height: 40 }} />
+			</View>
+			<View
+				style={[
+					styles.textInputContainer,
+					{
+						flexDirection: 'row',
+						alignItems: 'center',
+						marginTop: 16
+					}
+				]}>
+				<TextInput placeholder='Password' secureTextEntry={secureText} style={{ height: 40, flex: 0.9 }} />
+				<Pressable
+					onPress={() => setSecureText(!secureText)}
+					hitSlop={{ top: 16, bottom: 16, left: 16 }}
+					style={{ flex: 0.1 }}>
+					<Icon name={secureText ? 'eye-off' : 'eye'} color='#A8A7A7' size={20} />
+				</Pressable>
+			</View>
+			<View style={styles.forgotContainer}>
+				<Text style={[ styles.text, styles.forgotText ]}>Forgot Password?</Text>
+			</View>
+			<Pressable style={[ styles.button, { marginTop: 90 } ]} onPress={() => {}}>
+				<Text style={[ styles.text, styles.buttonText ]}>Log In</Text>
+			</Pressable>
+			<Text style={[ styles.text, { marginVertical: 36, color: 'rgba(255,255,255,0.9)' } ]}>OR</Text>
+			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+				<IconWrapper>
+					<Facebook />
+				</IconWrapper>
+				<IconWrapper>
+					<Twitter />
+				</IconWrapper>
+				<IconWrapper>
+					<Google />
+				</IconWrapper>
+			</View>
+		</View>
+	)
+}
+
+const IconWrapper = ({ children }) => {
+	return (
+		<View
+			style={{
+				borderRadius: 100,
+				backgroundColor: 'white',
+				padding: 8,
+				justifyContent: 'center',
+				alignItems: 'center'
+			}}>
+			<View style={{ height: 25, width: 25 }}>{children}</View>
+		</View>
+	)
+}
+
+const SignUpSection = ({ layoutWidth }) => {
+	const [ secureText, setSecureText ] = React.useState(true)
+	return (
+		<View style={styles.contentContainer(layoutWidth)}>
+			<View style={styles.textInputContainer}>
+				<TextInput placeholder='Enter email or username' keyboardType='email-address' style={{ height: 40 }} />
+			</View>
+			<View
+				style={[
+					styles.textInputContainer,
+					{
+						alignItems: 'center',
+						marginTop: 16,
+						flexDirection: 'row'
+					}
+				]}>
+				<TextInput placeholder='Password' secureTextEntry={secureText} style={{ height: 40, flex: 0.9 }} />
+				<Pressable
+					onPress={() => setSecureText(!secureText)}
+					hitSlop={{ top: 16, bottom: 16, left: 16 }}
+					style={{ flex: 0.1 }}>
+					<Icon name={secureText ? 'eye-off' : 'eye'} color='#A8A7A7' size={20} />
+				</Pressable>
+			</View>
+			<View
+				style={[
+					styles.textInputContainer,
+					{
+						alignItems: 'center',
+						marginTop: 16,
+						flexDirection: 'row'
+					}
+				]}>
+				<TextInput
+					placeholder='Confirm Password'
+					secureTextEntry={secureText}
+					style={{ height: 40, flex: 0.9 }}
+				/>
+				<Pressable
+					onPress={() => setSecureText(!secureText)}
+					hitSlop={{ top: 16, bottom: 16, left: 16 }}
+					style={{ flex: 0.1 }}>
+					<Icon name={secureText ? 'eye-off' : 'eye'} color='#A8A7A7' size={20} />
+				</Pressable>
+			</View>
+			<Pressable style={styles.button}>
+				<Text style={[ styles.text, styles.buttonText ]}>Sign Up</Text>
+			</Pressable>
+			<Text style={[ styles.text, { marginVertical: 36, color: 'rgba(255,255,255,0.9)' } ]}>OR</Text>
+			<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+				<IconWrapper>
+					<Facebook />
+				</IconWrapper>
+				<IconWrapper>
+					<Twitter />
+				</IconWrapper>
+				<IconWrapper>
+					<Google />
+				</IconWrapper>
+			</View>
+		</View>
+	)
+}
 
 const styles = StyleSheet.create({
 	text: {
@@ -272,5 +287,13 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		marginTop: 64,
 		paddingVertical: 14
+	},
+	contentContainer: (layoutWidth) => ({ marginTop: 50, width: layoutWidth }),
+	textInputContainer: {
+		backgroundColor: 'white',
+		borderRadius: 100,
+		paddingHorizontal: 16,
+		justifyContent: 'center',
+		elevation: 2
 	}
 })
