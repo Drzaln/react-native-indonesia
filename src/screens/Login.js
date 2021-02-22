@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
 	}
 
 	const translateX = interpolate(selected, {
-		inputRange: [ 0, measure ],
+		inputRange: [ 0, measure * 2 ],
 		outputRange: [ 0, measure ],
 		extrapolate: Extrapolate.CLAMP
 	})
